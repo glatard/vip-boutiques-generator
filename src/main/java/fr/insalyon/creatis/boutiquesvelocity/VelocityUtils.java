@@ -29,11 +29,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-B license and that you accept its terms.
  */
-
 package fr.insalyon.creatis.boutiquesvelocity;
 
 import fr.insalyon.creatis.vip.applicationimporter.client.bean.BoutiquesTool;
+import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -55,7 +61,7 @@ public class VelocityUtils {
         }
         return instance;
     }
-    
+
     private VelocityUtils() {
         velocityEngine = new VelocityEngine();
         velocityEngine.setProperty("resource.loader", "class");
@@ -63,16 +69,24 @@ public class VelocityUtils {
         velocityEngine.init();
     }
 
-    public String createDocument(BoutiquesTool bt, String vmTemplate) {
+    public void createDocument(HashMap<String, BoutiquesTool> bt, String vmTemplate, Path outputFilePath) throws IOException {
         VelocityContext context = new VelocityContext();
-        context.put("tool", bt);
+        
+        for (Map.Entry<String, BoutiquesTool> e : bt.entrySet()) {
+            context.put(e.getKey(), e.getValue());
+        }
         context.put("esc", new EscapeTool());
 
         StringWriter stringWriter = new StringWriter();
-
         Template template = velocityEngine.getTemplate(vmTemplate);
         template.merge(context, stringWriter);
 
-        return stringWriter.toString();
+        Files.write(outputFilePath, stringWriter.toString().getBytes());
+    }
+
+    public void createDocument(BoutiquesTool bt, String vmTemplate, Path outputFilePath) throws IOException {
+        HashMap<String, BoutiquesTool> btMaps = new HashMap<String, BoutiquesTool>();
+        btMaps.put("tool", bt);
+        createDocument(btMaps, vmTemplate, outputFilePath);
     }
 }
