@@ -126,11 +126,15 @@ then
   #end
   #if($input.getType() != "Flag")
     #set($newValue="""$input.getCommandLineFlag() $$input.getId().toUpperCase()""")
-    #if($input.getType() == "File" && $input.isOptional())
-    # Optional input is active and it is a file. The file needs to be downloaded (optional files are not handled by GASW).
+    #if($input.getType() == "File")
+     #if($input.isOptional())
+    # Optional input is active and it is a file. The file needs to be downloaded.
     downloadLFN $$input.getId().toUpperCase()
+     #end
     LOCAL_FILE_NAME=`basename $$input.getId().toUpperCase()`
     BOUTIQUES_COMMAND_LINE=$${ob}BOUTIQUES_COMMAND_LINE//'$input.getCommandLineKey()'/"$input.getCommandLineFlag() ${LOCAL_FILE_NAME}"}
+    #else
+    BOUTIQUES_COMMAND_LINE=$${ob}BOUTIQUES_COMMAND_LINE//'$input.getCommandLineKey()'/$newValue}
     #end
   #else
 if [ "$$input.getId().toUpperCase()" = "true" ]
