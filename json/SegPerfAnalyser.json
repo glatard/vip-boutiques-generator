@@ -1,0 +1,169 @@
+{
+  "name": "SegPerfAnalyser",
+  "tool-version": "0.1",
+  "description": "Evaluation of segmentation",
+  "command-line": "SegPerfAnalyser",
+  "docker-image": "fcervenansky/segperformance",
+  "docker-index": "http://index.docker.io",
+  "schema-version": "0.2",
+  "inputs": [
+    {
+      "id": "DistHausdorffMoy",
+      "name": "Modified Hausdorff's distance ",
+      "type": "Flag",
+      "description": "modified Hausdorff's distance with average",
+      "command-line-key": "DISTHAUFMOY",
+      "list": false,
+      "optional": false,
+      "command-line-flag": "-m",
+      "required-inputs": [],
+      "disabled-by-inputs": [],
+      "default-value": null
+    },
+    {
+      "id": "DistHausdorff",
+      "name": " Hausdorff's distance ",
+      "type": "Flag",
+      "description": "Classic Hausdorff's distance",
+      "command-line-key": "DISTHAUF",
+      "list": false,
+      "optional": false,
+      "command-line-flag": "-M",
+      "required-inputs": [],
+      "disabled-by-inputs": [],
+      "default-value": null
+    },
+    {
+      "id": "pnv",
+      "name": " \"Predictive Negative Value\" measure",
+      "type": "Flag",
+      "description": "Enable \"Predictive Negative Value\" measure (TN /(TN+FN))",
+      "command-line-key": "PNV",
+      "list": false,
+      "optional": false,
+      "command-line-flag": "-n",
+      "required-inputs": [],
+      "disabled-by-inputs": [],
+      "default-value": null
+    },
+    {
+      "id": "ppv",
+      "name": " \"Predictive Positive  Value\" measure",
+      "type": "Flag",
+      "description": "Enable \"Predictive Positive Value\" measure (TP /(TP+FP))",
+      "command-line-key": "PPV",
+      "list": false,
+      "optional": false,
+      "command-line-flag": "-p",
+      "required-inputs": [],
+      "disabled-by-inputs": [],
+      "default-value": null
+    },
+    {
+      "id": "specificity",
+      "name": "specificity",
+      "type": "Flag",
+      "description": "Enable specificty measure (TN /(TN+FP))",
+      "command-line-key": "SPECIFICITY",
+      "list": false,
+      "optional": false,
+      "command-line-flag": "-c",
+      "required-inputs": [],
+      "disabled-by-inputs": [
+        ""
+      ],
+      "default-value": null
+    },
+    {
+      "id": "sensibility",
+      "name": "sensibility",
+      "type": "Flag",
+      "description": "Enable sensibility measure (TP /(TP+FN))",
+      "command-line-key": "SENSIBILITY",
+      "list": false,
+      "optional": false,
+      "command-line-flag": "-e",
+      "required-inputs": [],
+      "disabled-by-inputs": [],
+      "default-value": null
+    },
+    {
+      "id": "dice",
+      "name": "dice",
+      "type": "Flag",
+      "description": "Enable dice measure ( (2*TN) /(SR+Sa))",
+      "command-line-key": "DICE",
+      "list": false,
+      "optional": false,
+      "command-line-flag": "-d",
+      "required-inputs": [],
+      "disabled-by-inputs": [],
+      "default-value": null
+    },
+    {
+      "id": "jaccard",
+      "name": "jaccard",
+      "type": "Flag",
+      "description": "Enable jaccard measure (TP /(Sr+Sa))",
+      "command-line-key": "JACCARD",
+      "list": false,
+      "optional": false,
+      "command-line-flag": "-j",
+      "required-inputs": [],
+      "disabled-by-inputs": [],
+      "default-value": null
+    },
+    {
+      "id": "image_input",
+      "name": "input image",
+      "type": "File",
+      "description": "input image",
+      "command-line-key": "INPUT",
+      "list": false,
+      "optional": false,
+      "command-line-flag": "-i",
+      "required-inputs": [],
+      "disabled-by-inputs": [],
+      "default-value": null
+    },
+    {
+      "id": "image_reference",
+      "name": "reference image",
+      "type": "File",
+      "description": "reference image",
+      "command-line-key": "REFERENCE",
+      "list": false,
+      "optional": false,
+      "command-line-flag": "-r",
+      "required-inputs": [],
+      "disabled-by-inputs": [],
+      "default-value": null
+    },
+    {
+      "id": "text",
+      "name": "type of output",
+      "type": "Flag",
+      "description": "output as text",
+      "command-line-key": "TEXT",
+      "list": false,
+      "optional": false,
+      "command-line-flag": "-t",
+      "required-inputs": [],
+      "disabled-by-inputs": [],
+      "default-value": null
+    }
+  ],
+  "output-files": [
+    {
+      "id": "metric_results",
+      "name": "results",
+      "description": "result",
+      "command-line-key": "-o",
+      "path-template": "results/[REFERENCE]/[INPUT]/result.txt",
+      "path-template-stripped-extensions": [],
+      "list": false,
+      "optional": false,
+      "command-line-flag": ""
+    }
+  ]
+}

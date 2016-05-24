@@ -1,0 +1,54 @@
+{
+  "name": "Metadata_updater",
+  "tool-version": "0.1",
+  "description": "A script to update meta-data of data used in the MICCAI challenges organized by FLI-IAM",
+  "command-line": "metadata-updater.py [INPUT_FILE] [EMAIL] [PIPELINE_NAME] [TEAM] [OUTPUT_FILE]",
+  "schema-version": "0.2",
+  "inputs": [
+    {
+      "id": "json_file",
+      "name": "Input file",
+      "type": "File",
+      "description": "A JSON file containing meta-data associated with the data processed by the pipeline. Content of this file will be copied to the output metadata.",
+      "command-line-key": "[INPUT_FILE]",
+      "list": false,
+      "optional": false
+    },
+    {
+      "id": "challenger_email",
+      "name": "Challenger email",
+      "type": "String",
+      "description": "Email of the challenger who runs the pipeline. Will be added to output meta-data.",
+      "command-line-key": "[EMAIL]",
+      "list": false,
+      "optional": false
+    },
+    {
+      "id": "pipeline_name",
+      "name": "Pipeline name",
+      "type": "String",
+      "description": "Name of the pipeline. Will be added to output meta-data.",
+      "command-line-key": "[PIPELINE_NAME]",
+      "list": false,
+      "optional": false
+    },
+    {
+      "id": "team_name",
+      "name": "Team name",
+      "type": "String",
+      "description": "Name of the challenger's team. Will be added to output meta-data.",
+      "command-line-key": "[TEAM]",
+      "list": false,
+      "optional": false
+    }
+  ],
+  "output-files": [
+    {
+      "id": "output_file",
+      "name": "Output file",
+      "description": "Output file containing execution-specific meta-data and input meta-data",
+      "command-line-key": "[OUTPUT_FILE]",
+      "path-template": "output.json"
+    }
+  ]
+}
