@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<description>
+  <executable name="echo.sh">
+    <access type="LFN" cached="true"/> 
+    <retrycount value="1"/>
+    <value value="/grid/biomed/creatis/vip/applications/echo/bin/echo.sh"/>
+    <executor value="LOCAL"/>
+    <input name="results-directory" option="no1"> 
+    </input>
+    <input name="important_parameter" option="--important_parameter"> 
+    </input>
+    <input name="flair_raw" option="--flair_raw"> 
+      <access type="LFN"/> 
+    </input>
+    <input name="t1_raw" option="--t1_raw"> 
+      <access type="LFN"/> 
+    </input>
+    <input name="t2_raw" option="--t2_raw"> 
+      <access type="LFN"/> 
+    </input>
+    <input name="gado_raw" option="--gado_raw"> 
+      <access type="LFN"/> 
+    </input>
+    <input name="pd_raw" option="--pd_raw"> 
+      <access type="LFN"/> 
+    </input>
+    <input name="flair_preprocessed" option="--flair_preprocessed"> 
+      <access type="LFN"/> 
+    </input>
+    <input name="t1_preprocessed" option="--t1_preprocessed"> 
+      <access type="LFN"/> 
+    </input>
+    <input name="t2_preprocessed" option="--t2_preprocessed"> 
+      <access type="LFN"/> 
+    </input>
+    <input name="gado_preprocessed" option="--gado_preprocessed"> 
+      <access type="LFN"/> 
+    </input>
+    <input name="pd_preprocessed" option="--pd_preprocessed"> 
+      <access type="LFN"/> 
+    </input>
+    <input name="mask" option="--mask"> 
+      <access type="LFN"/> 
+    </input>
+    <output name="Segmented image" option="--segmentation_result_challenge">
+      <template value="$dir1/$na1/output.txt"/>
+      <access type="LFN"/>
+    </output>
+  </executable>
+</description>

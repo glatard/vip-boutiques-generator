@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow name="$tool.getName()" version="$tool.getToolVersion()">
+  <description>$esc.xml($tool.getDescription())</description>
+  <interface>
+       <source name="Subject directory" type="string">
+      <source-comment>&lt;b&gt;&lt;font color="blue"&gt;new input&lt;/font&gt;&lt;/b&gt;: add description here...
+      </source-comment>
+    </source>
+     #foreach( $input in $adaptater.getInputs() )
+      #if( $input.getId() != "input_file")
+      <source name="$input.getId()" type="string" >
+      <source-comment>&lt;b&gt;&lt;font color="blue"&gt;new input&lt;/font&gt;&lt;/b&gt;: add description here...
+      </source-comment>
+    </source>
+    #else
+    #end
+    #end
+    <source name="results-directory" type="URI" optional="false" default="/vip/Home">
+        <source-comment>$esc.xml("<b><font color=blue>results-directory</font></b> (<b><font color=green>Directory</font></b>):") Directory where the results will be stored.</source-comment>
+    </source>
+    #foreach( $input in $tool.getInputs() )
+#if($input.getType()=="File" && $input.getId() != "input_image")
+    <source name="$input.getId()" type="URI" optional="$input.isOptional()">
+#else
+#if($input.getType()=="Flag")
+    <source name="$input.getId()" type="string" optional="$input.isOptional()" default="false">
+#set($extraComment="Put '<b>true</b>' to activate the flag and '<b>false</b>' to disable it.")
+#else
+#if($input.getDefaultValue()!="null")
+    <source name="$input.getId()" type="string" optional="$input.isOptional()" default="$input.getDefaultValue()">
+#else
+#if($input.isOptional()==true)
+    <source name="$input.getId()" type="string" optional="$input.isOptional()" default="no">
+    #set($extraComment="Put '<b>no</b>' to ignore this optional input.")
+#else
+    #set($extraComment="")
+#end    
+
+#if($input.isOptional()==true)
+    <source name="$input.getId()" type="string" optional="$input.isOptional()" default="no">
+#set($extraComment="Put '<b>no</b>' to ignore this optional input.")
+#else
+    <source name="$input.getId()" type="string" optional="$input.isOptional()">
+#set($extraComment="")
+#end
+#end
+#end
+#end
+      <source-comment>$esc.xml("<b><font color=blue>$input.getId()</font></b> (<b><font color=green>$input.getType()</font></b>):") $esc.xml($input.getDescription()) $esc.xml(${extraComment})</source-comment>
+    </source>
+#end
+#foreach($output in $tool.getOutputFiles())
+    <sink name="$output.getId()" type="string" />
+#end
+#foreach($output in $metric.getOutputFiles())
+    <sink name="$output.getId()" type="string" />
+#end
+        <sink name="metadata" type="string" />
+  </interface>
+  <processors>
+    <processor name="$tool.getName()" >
+        <in name="results-directory" type="string" depth="0"/>
+#foreach($input in $tool.getInputs())
+#if($input.getType()=="File" )
+        <in name="$input.getId()" type="URI" depth="0"/>
+#else
+        <in name="$input.getId()" type="string" depth="0"/>
+#end
+#end
+#foreach( $output in $tool.getOutputFiles() )
+        <out name="$output.getId()" type="URI" depth="0"/>
+#end
+        <iterationstrategy>
+          <cross>
+            <port name="results-directory" />
+#foreach($input in $tool.getInputs()) 
+            <port name="$input.getId()"/>
+#end
+          </cross>
+        </iterationstrategy>
+        <gasw descriptor="$tool.getGASWLFN()"/>
+    </processor>
+      <processor name="$metric.getName()" >
+          <in name="results-directory" type="string" depth="0" />
+          <in name="input-image" type ="string" depth="0" />
+          <in name="reference-image" type ="string" depth="0" />
+          #foreach($output in $metric.getOutputFiles())
+            <out name="$output.getId()" type="URI" depth="0"/>
+          #end
+           <iterationstrategy>
+          <cross>
+            <port name="results-directory" />
+            <port name="input-image"/>
+            <port name="reference-image"/>
+             </cross>
+        </iterationstrategy>
+        <gasw descriptor="$metric.getGASWLFN()"/>
+      </processor>
+  <processor name="$adaptater.getName()" >
+          <in name="results-directory" type="string" depth="0" />
+         #foreach($input in $adaptater.getInputs()) 
+            <in name="$input.getId()" type="string" depth="0" />
+#end
+          #foreach($output in $adaptater.getOutputFiles())
+            <out name="$output.getId()" type="URI" depth="0"/>
+          #end
+           <iterationstrategy>
+          <cross>
+            <port name="results-directory" />
+             #foreach($input in $adaptater.getInputs()) 
+            <port name="$input.getId()"  />
+            #end
+          </cross>
+        </iterationstrategy>
+        <gasw descriptor="$adaptater.getGASWLFN()"/>
+      </processor>
+    <processor name="listSubjectDirectory" >
+      <in name="in" type="string" depth="0" />
+      <out name="fullPaths" type="string" depth="1" />
+      <out name="baseNames" type="string" depth="1" />
+      <out name="reference" type="string" depth="0" />
+      <out name="image" type="string" depth="0" />
+      <out name="metadata" type="string" depth="0" />
+      <beanshell>import fr.insalyon.creatis.grida.client.GRIDAClient;
+import fr.insalyon.creatis.grida.client.GRIDAClientException;
+import fr.insalyon.creatis.grida.common.bean.GridData;
+import java.util.ArrayList;
+import java.util.List;
+
+
+        fullPaths = new ArrayList();
+        baseNames = new ArrayList();
+        image = null;
+        metadata = null;
+        reference = null;
+
+    
+            try {
+                String proxyPath = "/var/www/.vip/proxies/x509up_server";
+                GRIDAClient vc = new GRIDAClient("kingkong.grid.creatis.insa-lyon.fr", 9006, proxyPath);
+                System.out.println("making call");
+                System.out.println("call done");
+                for (GridData s : vc.getFolderData(in, true)) {
+                    String name = s.getName();
+                    String type = s.getType().name();
+                    if (type.equals("File")) {
+                        String fullPath = in + "/" + name;
+                        fullPaths.add(fullPath);
+                        baseNames.add(name);
+                        if(name.equals("input.json")){
+                          if(metadata != null )
+                            throw new  Exception("[ERROR] Found file input.json but metadata was already present "+"("+metadata+")");
+                          metadata=fullPath;
+                          continue;
+                        }
+                        if(name.equals("image.nii.gz")){
+                          if(image != null )
+                            throw new Exception("[ERROR] Found file image.nii.gz but image was already present "+"("+image+")");
+                          image=fullPath;
+                          continue;
+                        }
+                        if(name.equals("reference.nii.gz")){
+                          if(reference != null )
+                        throw new Exception("[ERROR] Found file reference.nii.gz but reference image was already present "+"("+reference+")");    
+                        reference=fullPath;
+                        continue;
+                        }
+                        System.out.println("[WARNING] unknown file found in "+in+": "+name);
+                      }
+                  }
+                } catch (GRIDAClientException ex) {
+                  ex.printStackTrace();
+                }
+    
+    if(image == null)
+        throw new Exception("[ERROR] Couldn't find image file in "+baseNames);
+    if(reference == null)
+        throw new Exception("[ERROR] Couldn't find reference file in "+baseNames);
+    if(metadata == null)
+        throw new Exception("[ERROR] Couldn't find metadata file in "+baseNames);
+      </beanshell>
+    </processor>
+
+</processors>
+  <links>
+    <link from="results-directory" to="$tool.getName():results-directory" />
+      <link from="results-directory" to="$adaptater.getName():results-directory" />
+    <link from="listSubjectDirectory:image" to="$tool.getName():input_image" />
+    <link from="listSubjectDirectory:reference" to="$metric.getName():reference_image" />
+        <link from="listSubjectDirectory:metadata" to="$adaptater.getName():input_file" />
+#foreach( $input in $tool.getInputs() )
+    <link from="$input.getId()" to="$tool.getName():$input.getId()" />
+#end
+#foreach($output in $tool.getOutputFiles())
+    <link from="$tool.getName():$output.getId()" to="$output.getId()" />
+#end
+#foreach($output in $metric.getOutputFiles())
+    <link from="$metric.getName():$output.getId()" to="$output.getId()" />
+#end
+#foreach($output in $tool.getOutputFiles())
+    #if($output.getId() == "segmentation_result_challenge")
+    <link from="$tool.getName():$output.getId()" to="$metric.getName():input-image" />
+    #end
+#end
+    #foreach( $input in $adaptater.getInputs() )
+      #if( $input.getId() != "input_file")
+        <link from="$input.getId()" to="$adaptater.getName():$input.getId()" />
+        #end
+        #end
+      <link from="Subject directory" to="listSubjectDirectory:in" />
+      <link from="$adaptater.getName():output_file" to="metadata" />
+  </links>
+</workflow>
