@@ -50,6 +50,8 @@ public class BoutiquesTool  {
     private String dockerImage;
     private String dockerIndex;
     private String schemaVersion;
+    private String MICCAITeamName = "Unknown";
+    private String MICCAIChallengerEmail = "Unknown";
     private List<BoutiquesInput> inputs;
     private List<BoutiquesOutputFile> outputFiles;
     
@@ -144,6 +146,24 @@ public class BoutiquesTool  {
 
     public String getApplicationLFN() {
         return applicationLFN;
+    }
+
+    public String getMICCAITeamName() {
+        return MICCAITeamName;
+    }
+
+    public void setMICCAITeamName(String MICCAITeamName) {
+        this.MICCAITeamName = MICCAITeamName;
+        if(this.MICCAITeamName != null)
+            this.MICCAITeamName = this.MICCAITeamName.replace(' ','_');
+    }
+
+    public String getMICCAIChallengerEmail() {
+        return MICCAIChallengerEmail;
+    }
+
+    public void setMICCAIChallengerEmail(String MICCAIChallengerEmail) {
+        this.MICCAIChallengerEmail = MICCAIChallengerEmail;
     }
     
     

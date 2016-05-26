@@ -6,6 +6,8 @@
     "docker-image": "centos:latest",
     "docker-index": "http://index.docker.io",
     "schema-version": "0.3",
+    "vip:miccai-challenger-email": "example@example.org",
+    "vip:miccai-challenge-team-name": "Example team",
     "inputs": [
         {
             "id": "important_parameter",

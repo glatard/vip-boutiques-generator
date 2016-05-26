@@ -114,7 +114,7 @@
       "default-value": null
     },
     {
-      "id": "image_input",
+      "id": "segmented_image",
       "name": "input image",
       "type": "File",
       "description": "input image",
@@ -127,7 +127,7 @@
       "default-value": null
     },
     {
-      "id": "image_reference",
+      "id": "reference_image",
       "name": "reference image",
       "type": "File",
       "description": "reference image",
@@ -159,7 +159,7 @@
       "name": "results",
       "description": "result",
       "command-line-key": "-o",
-      "path-template": "results/[REFERENCE]/[INPUT]/result.txt",
+      "path-template": "metrics.txt",
       "path-template-stripped-extensions": [],
       "list": false,
       "optional": false,

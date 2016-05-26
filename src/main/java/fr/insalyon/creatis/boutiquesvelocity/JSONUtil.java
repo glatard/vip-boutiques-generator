@@ -54,6 +54,8 @@ public class JSONUtil {
         bt.setDockerImage(getPropertyAsString(jsonObject, "docker-image"));
         bt.setDockerIndex(getPropertyAsString(jsonObject, "docker-index"));
         bt.setSchemaVersion(getPropertyAsString(jsonObject, "schema-version"));
+        bt.setMICCAIChallengerEmail(getPropertyAsString(jsonObject, "vip:miccai-challenger-email"));
+        bt.setMICCAITeamName(getPropertyAsString(jsonObject, "vip:miccai-challenge-team-name"));
 
         JSONArray inputJSONArray = getPropertyAsArray(jsonObject, "inputs");
         if (inputJSONArray != null) {
