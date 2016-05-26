@@ -2,102 +2,11 @@
   "name": "SegPerfAnalyser",
   "tool-version": "0.1",
   "description": "Evaluation of segmentation",
-  "command-line": "SegPerfAnalyser [DISTHAUF] [MFPR] [MOR] [MLV] [LDM] [AE] [SEM] [INPUT] [REFERENCE] [TEXT] [OUTPUT]",
+  "command-line": "SegPerfAnalyser -D -Z -z -v -d -a -j -t [INPUT] [REFERENCE] [OUTPUT]",
   "docker-image": "fcervenansky/segperanalyzer",
   "docker-index": "http://index.docker.io",
   "schema-version": "0.2",
   "inputs": [
-     {
-      "id": "DistHausdorff",
-      "name": " Hausdorff's distance ",
-      "type": "Flag",
-      "description": "Classic Hausdorff's distance",
-      "command-line-key": "DISTHAUF",
-      "list": false,
-      "optional": false,
-      "command-line-flag": "-D",
-      "required-inputs": [],
-      "disabled-by-inputs": [],
-      "default-value": null
-    },
-    {
-      "id": "mfpr",
-      "name": " \"Max False Positive Ratio",
-      "type": "Flag",
-      "description": "Maximum of false positive ratio to limit the detection of a lesion in GT if a lesion in the image is too big. (default 0.1)",
-      "command-line-key": "MFPR",
-      "list": false,
-      "optional": false,
-      "command-line-flag": "-Z",
-      "required-inputs": [],
-      "disabled-by-inputs": [],
-      "default-value": null
-    },
-    {
-      "id": "mor",
-      "name": " \"Min Overlap Ratio",
-      "type": "Flag",
-      "description": " Minimum overlap ratio to say if a lesion of the GT is detected.(default 0.05)",
-      "command-line-key": "MOR",
-      "list": false,
-      "optional": false,
-      "command-line-flag": "-z",
-      "required-inputs": [],
-      "disabled-by-inputs": [],
-      "default-value": null
-    },
-    {
-      "id": "mlv",
-      "name": "Min Lesion Volume",
-      "type": "Flag",
-      "description": " Min volume of lesion for Lesions detection metrics in mm^3 (default 3mm^3)",
-      "command-line-key": "MLV",
-      "list": false,
-      "optional": false,
-      "command-line-flag": "-v",
-      "required-inputs": [],
-      "disabled-by-inputs": [],
-      "default-value": null
-    },
-    {
-      "id": "ldm",
-      "name": "Lesion Detection Metrics",
-      "type": "Flag",
-      "description": " Compute metrics to evaluate the detection of lesions along to a segmentation",
-      "command-line-key": "LDM",
-      "list": false,
-      "optional": false,
-      "command-line-flag": "-d",
-      "required-inputs": [],
-      "disabled-by-inputs": [],
-      "default-value": null
-    },
-    {
-      "id": "ae",
-      "name": "advanced Evaluation",
-      "type": "Flag",
-      "description": " Compute results for each cluster (intra-lesion results)",
-      "command-line-key": "AE",
-      "list": false,
-      "optional": false,
-      "command-line-flag": "-a",
-      "required-inputs": [],
-      "disabled-by-inputs": [],
-      "default-value": null
-    },
-    {
-      "id": "sem",
-      "name": "Segmentation Evaluation Metrics",
-      "type": "Flag",
-      "description": " Compute metrics to evaluate a segmentation",
-      "command-line-key": "SEM",
-      "list": false,
-      "optional": false,
-      "command-line-flag": "-j",
-      "required-inputs": [],
-      "disabled-by-inputs": [],
-      "default-value": null
-    },
     {
       "id": "segmented_image",
       "name": "input image",
@@ -106,10 +15,7 @@
       "command-line-key": "INPUT",
       "list": false,
       "optional": false,
-      "command-line-flag": "-i",
-      "required-inputs": [],
-      "disabled-by-inputs": [],
-      "default-value": null
+      "command-line-flag": "-i"
     },
     {
       "id": "reference_image",
@@ -119,23 +25,7 @@
       "command-line-key": "REFERENCE",
       "list": false,
       "optional": false,
-      "command-line-flag": "-r",
-      "required-inputs": [],
-      "disabled-by-inputs": [],
-      "default-value": null
-    },
-    {
-      "id": "text",
-      "name": "type of output",
-      "type": "Flag",
-      "description": "output as text",
-      "command-line-key": "TEXT",
-      "list": false,
-      "optional": false,
-      "command-line-flag": "-t",
-      "required-inputs": [],
-      "disabled-by-inputs": [],
-      "default-value": null
+      "command-line-flag": "-r"
     }
   ],
   "output-files": [
@@ -145,7 +35,6 @@
       "description": "result",
       "command-line-key": "OUTPUT",
       "path-template": "result_metrics.txt",
-      "path-template-stripped-extensions": [],
       "list": false,
       "optional": false,
       "command-line-flag": "-o"
